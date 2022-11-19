@@ -1,10 +1,12 @@
 body {
   padding-top: 50px;
 }
+
+#ytplayer {
+  padding-top: 100px;
+}
+
 .starter-template {
   padding: 40px 15px;
   text-align: center;
-}
-#headshot {
-    width: 500px;
 }
