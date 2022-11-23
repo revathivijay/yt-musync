@@ -52,16 +52,90 @@
       </div>
     </nav>
     <div class="container">
-      <div id="ytplayer">
+      <div id="ytplayer"></div>
+      <div id="player-controls">
+        <div id="progress-bar">
+          <div id="line"></div>
+          <div id="circle"></div>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn-default"
+          aria-lable="Left Align"
+          onclick="playVideo()"
+        >
+          <span
+            class="glyphicon glyphicon-play control-icon-size"
+            aria-hidden="true"
+          ></span>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-default"
+          aria-lable="Left Align"
+          onclick="pauseVideo()"
+        >
+          <span
+            class="glyphicon glyphicon-pause control-icon-size"
+            aria-hidden="true"
+          ></span>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-default"
+          aria-lable="Left Align"
+          onclick="stopVideo()"
+        >
+          <span
+            class="glyphicon glyphicon-stop control-icon-size"
+            aria-hidden="true"
+          ></span>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-default"
+          aria-lable="Left Align"
+          onclick="muteVideo()"
+        >
+          <span
+            id="mute-button"
+            class="glyphicon glyphicon glyphicon-volume-off control-icon-size"
+            aria-hidden="true"
+          ></span>
+        </button>
+      </div>
+
+      <div id="video-info">
+        <div class="card">
+          <div class="card-body font-size border-text">
+            This is the default video. Navigate to "Enter Video ID" to sync your
+            own video!
+          </div>
+        </div>
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script>
-          
-          setInterval(progressBarLoop, 100);
-          function progressBarLoop() {
-            
-            var progressBar = $('#progress-bar');
-            var progressCircle = $('#circle');
-            
-            progressBar.click(function(event){
+          window.jQuery ||
+            document.write('<script src="js/jquery.min.js"><\/script>');
+        </script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="/Users/revathivijay/Desktop/Personal-Projects/yt-musync/node_modules/socket.io/client-dist/socket.io.js"></script>
+        <script>
+          var socket = io();
+        </script>
+        <script>
+          setInterval(progressBarClick, 100);
+          function progressBarClick() {
+            var progressBar = $("#progress-bar");
+            var progressCircle = $("#circle");
+
+            progressBar.click(function (event) {
               var offset = $(this).offset();
               var x = event.pageX - offset.left;
               var y = event.pageY - offset.top;
@@ -70,10 +144,8 @@
               var percent = x / width;
               var time = percent * player.getDuration();
               player.seekTo(time);
-              console.log("Seeked ahead to: " + time);
-              var converted = player.getCurrentTime() / player.getDuration() * 100;
-              console.log("Fraction: " + converted);
-              progressCircle.css('margin-left', converted + '%');
+              // console.log("Seeked to: " + time);
+              progressCircle.css("margin-left", time + "%");
             });
           }
         </script>
@@ -86,13 +158,11 @@
 
           var player;
           var videoID = window.location.href.split("uid=")[1];
-          if(videoID == null) {
+          if (videoID == null) {
             // default video
             videoID = "DGGCUPHodd4";
           }
-            
-          console.log("Video ID: " + videoID);
-          
+
           function onYouTubePlayerAPIReady() {
             player = new YT.Player("ytplayer", {
               height: "720",
@@ -127,74 +197,34 @@
           function stopVideo() {
             player.stopVideo();
           }
-          
-          var mute = false;
-          var muteButton = $('#mute-button');
+
+          // call this function when video is playing
+
+          function updateProgressBar() {
+            var progressCircle = $("#circle");
+            var converted =
+              (player.getCurrentTime() / player.getDuration()) * 100;
+            progressCircle.css("margin-left", converted + "%");
+          }
+
+          var muteButton = $("#mute-button");
           function muteVideo() {
-            if(!mute) {
+            if (!player.isMuted()) {
               player.mute();
-              mute = true;
             } else {
               player.unMute();
-              mute = false;
             }
           }
 
-          var run = true;
           function onPlayerStateChange(event) {
             console.log(event.data);
-            if (event.data == YT.PlayerState.PLAYING && run) {
+            if (event.data == YT.PlayerState.PLAYING) {
               var time = player.getCurrentTime();
-              console.log(time);
-              run = false;
+              setInterval(updateProgressBar, 100);
             }
           }
-
-          
-
         </script>
       </div>
-      <div id="player-controls">
-
-        <div id="progress-bar">
-          <div id="line"></div>
-          <div id="circle"></div>
-        </div>
-
-        <button type="button" class="btn btn-default" aria-lable="Left Align" onclick="playVideo()">
-          <span class="glyphicon glyphicon-play control-icon-size" aria-hidden="true"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" aria-lable="Left Align" onclick="pauseVideo()">
-          <span class="glyphicon glyphicon-pause control-icon-size" aria-hidden="true"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" aria-lable="Left Align" onclick="stopVideo()">
-          <span class="glyphicon glyphicon-stop control-icon-size" aria-hidden="true"></span>
-        </button>
-
-        <button type="button" class="btn btn-default" aria-lable="Left Align" onclick="muteVideo()">
-          <span id="mute-button" 
-            class="glyphicon glyphicon glyphicon-volume-off control-icon-size"
-            aria-hidden="true"
-          ></span>
-        </button>
-      </div>
-     
-      <div id="video-info">
-        <div class="card">
-        <div class="card-body font-size center">
-          This is the default video. Navigate to "Enter Video ID" to sync your own video!
-      </div>
-      </div>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>
-      window.jQuery ||
-        document.write('<script src="js/jquery.min.js"><\/script>');
-    </script>
-    <script src="js/bootstrap.min.js"></script>
+    </div>
   </body>
 </html>
