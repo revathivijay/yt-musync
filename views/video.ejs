@@ -77,13 +77,28 @@
         document.write('<script src="js/jquery.min.js"><\/script>');
     </script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/socket.io.js"></script>
     <script>
+      var socket = io();
+
+      socket.on("redirectEvent", function (msg) {
+        console.log("State: " + msg.state);
+        console.log("Redirecting to: " + msg.videoId);
+        window.location.href = "/home" + "?uid=" + msg.videoId;
+      });
+
       var searchBoxText = $("#search");
       searchBoxText.keypress(function (e) {
         if (e.which == 13) {
           var url = searchBoxText.val();
+          var videoId = url.split("v=")[1];
           console.log("Text entered: " + searchBoxText.val());
-          console.log((window.location.href = "/home" + "?uid=" + url));
+
+          mydata = {
+            state: "redirect",
+            videoId: videoId,
+          };
+          socket.emit("redirectEvent", mydata);
         }
       });
     </script>
