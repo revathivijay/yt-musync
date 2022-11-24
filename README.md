@@ -45,8 +45,12 @@ nodemon index.js localhost [PORT]
 
 **Enter the URL to your youtube video, which is broadcasted to everyone connected to the app at the time.**
 
-![URL](https://github.com/revathivijay/yt-musync/blob/main/images/url.gif)
+![URL](images/url.gif)
 
-**Enjoy syncing!**
+**Play/Pause/Stop**
 
-![Sync]()
+![Sync](images/demo1.gif) ![Sync](images/demo2.gif)
+
+**Seek**
+
+![Seek](images/seek.gif)
