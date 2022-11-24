@@ -85,3 +85,21 @@ body {
   border: 3px solid rgb(10, 115, 207);
   padding: 10px;
 }
+
+.nav-color {
+  background-color: rgb(208, 4, 4);
+}
+
+.navbar-inverse .navbar-brand {
+  color: #eee;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+  color: #eee;
+}
+
+.form-control {
+  height: 70px;
+  font-size: 20px;
+  border-radius: 8px;
+}
