@@ -4,9 +4,13 @@ Started off as an attempt to synchronize listening on Youtube Music, but the fin
 
 ## Heroku
 
+---
+
 The app is hosted on [heroku](https://aqueous-bastion-61665.herokuapp.com/).
 
 ## Running the app locally
+
+---
 
 Clone the repo and cd into the local folder
 
@@ -28,9 +32,21 @@ Running the app
 node index.js
 ```
 
-Run the app using nodemon (default PORT is 8080)
+(OR) Run the app using nodemon (default PORT is 8080)
 
 ```
 npm install -g nodemon
 nodemon index.js localhost [PORT]
 ```
+
+## Demo
+
+---
+
+**Enter the URL to your youtube video, which is broadcasted to everyone connected to the app at the time.**
+
+![URL]()
+
+**Enjoy syncing!**
+
+![Sync]()
