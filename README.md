@@ -37,6 +37,8 @@ nodemon index.js localhost [PORT]
 
 ## Demo
 
+(Demos are a bit laggy, try using the [link](https://aqueous-bastion-61665.herokuapp.com/) to try it out yourself!)
+
 **Enter the URL to your youtube video, which is broadcasted to everyone connected to the app at the time.**
 
 ![URL](images/url.gif)
