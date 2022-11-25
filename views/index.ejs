@@ -130,6 +130,12 @@
           // sockets code
           var socket = io();
 
+          socket.on("redirectEvent", function (msg) {
+            console.log("State: " + msg.state);
+            console.log("Redirecting to: " + msg.videoId);
+            window.location.href = "/home" + "?uid=" + msg.videoId;
+          });
+
           socket.on("playEvent", function (msg) {
             if (msg.state == "play") {
               playVideo();
