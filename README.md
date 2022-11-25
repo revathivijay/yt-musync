@@ -1,6 +1,6 @@
 # Youtube mu-sync
 
-Started off as an attempt to synchronize listening on Youtube Music, but the final version instead gives you the ability to watch Youtube videos in sync. Also has features to play/pause/stop that is broadcasted to everyone watching the video!
+Started off as an attempt to synchronize listening on Youtube Music, but the final version instead gives you the ability to watch Youtube videos in sync, with the ability to play/pause/stop the video for everyone watching!
 
 ## Heroku
 
@@ -36,6 +36,8 @@ nodemon index.js localhost [PORT]
 ```
 
 ## Demo
+
+(Demos are a bit laggy, try using the [link](https://aqueous-bastion-61665.herokuapp.com/) to try it out yourself!)
 
 **Enter the URL to your youtube video, which is broadcasted to everyone connected to the app at the time.**
 
