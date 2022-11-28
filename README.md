@@ -45,7 +45,7 @@ nodemon index.js localhost [PORT]
 
 **Play/Pause/Stop**
 
-![Sync](images/demo1.gif) ![Sync](images/demo2.gif)
+![Sync](images/demo2.gif)
 
 **Seek**
 
