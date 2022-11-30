@@ -52,6 +52,11 @@
       </div>
     </nav>
     <div class="container">
+      <div class="starter-template">
+        <h1>Youtube Mu-sync</h1>
+        <p class="lead">Sync your youtube videos with your friends</p>
+      </div>
+
       <div id="ytplayer"></div>
       <div id="player-controls">
         <div id="progress-bar">
@@ -109,97 +114,116 @@
         </button>
       </div>
 
-      <div id="video-info">
-        <div class="card">
-          <div class="card-body font-size border-text">
-            This is the default video. Navigate to "Enter Video URL" to sync
-            your own video!
+      <!-- button with messages icon for chat on click opens a modal with chat box -->
+      <button
+        id="chat-button"
+        type="button"
+        class="btn btn-circle"
+        data-toggle="modal"
+        data-target="#myModal"
+      >
+        <span
+          class="glyphicon glyphicon-comment control-icon-size"
+          aria-hidden="true"
+        ></span>
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="myModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h4 class="modal-title" id="myModalLabel">Chat</h4>
+            </div>
+            <div class="modal-body">
+              <div id="chat-box"></div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+            </div>
           </div>
-        </div>
-        <!-- Bootstrap core JavaScript
+
+          <!-- Bootstrap core JavaScript
     ================================================== -->
-        <!-- Placed at the end of the document so the pages load faster -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script>
-          window.jQuery ||
-            document.write('<script src="js/jquery.min.js"><\/script>');
-        </script>
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/socket.io.js"></script>
-        <script>
-          // sockets code
-          var socket = io();
+          <!-- Placed at the end of the document so the pages load faster -->
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+          <script>
+            window.jQuery ||
+              document.write('<script src="js/jquery.min.js"><\/script>');
+          </script>
+          <script src="js/bootstrap.min.js"></script>
+          <script src="js/socket.io.js"></script>
+          <script>
+            // sockets code
+            var socket = io();
 
-          socket.on("redirectEvent", function (msg) {
-            console.log("State: " + msg.state);
-            console.log("Redirecting to: " + msg.videoId);
-            window.location.href = "/home" + "?uid=" + msg.videoId;
-          });
+            socket.on("redirectEvent", function (msg) {
+              console.log("State: " + msg.state);
+              console.log("Redirecting to: " + msg.videoId);
+              window.location.href = "/home" + "?uid=" + msg.videoId;
+            });
 
-          socket.on("playEvent", function (msg) {
-            if (msg.state == "play") {
-              playVideo();
-            } else if (msg.state == "pause") {
-              pauseVideo();
-            } else if (msg.state == "stop") {
-              stopVideo();
-            } else if (msg.state == "seek") {
-              var progressCircle = $("#circle");
-              player.seekTo(msg.time);
-              progressCircle.css("margin-left", time + "%");
-            }
-          });
+            socket.on("playEvent", function (msg) {
+              if (msg.state == "play") {
+                playVideo();
+              } else if (msg.state == "pause") {
+                pauseVideo();
+              } else if (msg.state == "stop") {
+                stopVideo();
+              } else if (msg.state == "seek") {
+                var progressCircle = $("#circle");
+                player.seekTo(msg.time);
+                progressCircle.css("margin-left", time + "%");
+              }
+            });
 
-          var playButton = $("#playButton");
-          var pauseButton = $("#pauseButton");
-          var stopButton = $("#stopButton");
-          var progressBar = $("#progress-bar");
-          var progressCircle = $("#circle");
-
-          playButton.click(function () {
-            mydata = {
-              state: "play",
-              time: player.getCurrentTime(),
-            };
-            socket.emit("playEvent", mydata);
-          });
-          pauseButton.click(function () {
-            mydata = {
-              state: "pause",
-              time: player.getCurrentTime(),
-            };
-            socket.emit("playEvent", mydata);
-          });
-          stopButton.click(function () {
-            mydata = {
-              state: "stop",
-              time: player.getCurrentTime(),
-            };
-            socket.emit("playEvent", mydata);
-          });
-
-          progressBar.click(function (event) {
-            var offset = $(this).offset();
-            var x = event.pageX - offset.left;
-            var y = event.pageY - offset.top;
-            var width = $(this).width();
-            var height = $(this).height();
-            var percent = x / width;
-            var time = percent * player.getDuration();
-            // player.seekTo(time);
-            progressCircle.css("margin-left", time + "%");
-            mydata = {
-              state: "seek",
-              time: time,
-            };
-            socket.emit("playEvent", mydata);
-          });
-        </script>
-        <script>
-          setInterval(progressBarClick, 0);
-          function progressBarClick() {
+            var playButton = $("#playButton");
+            var pauseButton = $("#pauseButton");
+            var stopButton = $("#stopButton");
             var progressBar = $("#progress-bar");
             var progressCircle = $("#circle");
+
+            playButton.click(function () {
+              mydata = {
+                state: "play",
+                time: player.getCurrentTime(),
+              };
+              socket.emit("playEvent", mydata);
+            });
+            pauseButton.click(function () {
+              mydata = {
+                state: "pause",
+                time: player.getCurrentTime(),
+              };
+              socket.emit("playEvent", mydata);
+            });
+            stopButton.click(function () {
+              mydata = {
+                state: "stop",
+                time: player.getCurrentTime(),
+              };
+              socket.emit("playEvent", mydata);
+            });
 
             progressBar.click(function (event) {
               var offset = $(this).offset();
@@ -209,87 +233,111 @@
               var height = $(this).height();
               var percent = x / width;
               var time = percent * player.getDuration();
-              player.seekTo(time);
+              // player.seekTo(time);
               progressCircle.css("margin-left", time + "%");
+              mydata = {
+                state: "seek",
+                time: time,
+              };
+              socket.emit("playEvent", mydata);
             });
-          }
-        </script>
-        <script>
-          // Load the IFrame Player API code asynchronously.
-          var tag = document.createElement("script");
-          tag.src = "https://www.youtube.com/player_api";
-          var firstScriptTag = document.getElementsByTagName("script")[0];
-          firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+          </script>
+          <script>
+            setInterval(progressBarClick, 0);
+            function progressBarClick() {
+              var progressBar = $("#progress-bar");
+              var progressCircle = $("#circle");
 
-          var player;
-          var videoID = window.location.href.split("uid=")[1];
-          if (videoID == null) {
-            // default video
-            videoID = "DGGCUPHodd4";
-          }
-
-          function onYouTubePlayerAPIReady() {
-            player = new YT.Player("ytplayer", {
-              height: "720",
-              width: "1080",
-              videoId: videoID,
-              events: {
-                onReady: onPlayerReady,
-                onStateChange: onPlayerStateChange,
-              },
-              playerVars: {
-                controls: 0,
-                disablekb: 1,
-                modestbranding: 1,
-                rel: 0,
-                showinfo: 0,
-                iv_load_policy: 3,
-              },
-            });
-          }
-          function onPlayerReady(event) {
-            event.target.stopVideo();
-          }
-
-          function playVideo() {
-            player.playVideo();
-          }
-
-          function pauseVideo() {
-            player.pauseVideo();
-          }
-
-          function stopVideo() {
-            player.stopVideo();
-            var progressCircle = $("#circle");
-            progressCircle.css("margin-left", "0%");
-          }
-
-          // call this function when video is playing
-
-          function updateProgressBar() {
-            var progressCircle = $("#circle");
-            var converted =
-              (player.getCurrentTime() / player.getDuration()) * 100;
-            progressCircle.css("margin-left", converted + "%");
-          }
-
-          var muteButton = $("#mute-button");
-          function muteVideo() {
-            if (!player.isMuted()) {
-              player.mute();
-            } else {
-              player.unMute();
+              progressBar.click(function (event) {
+                var offset = $(this).offset();
+                var x = event.pageX - offset.left;
+                var y = event.pageY - offset.top;
+                var width = $(this).width();
+                var height = $(this).height();
+                var percent = x / width;
+                var time = percent * player.getDuration();
+                player.seekTo(time);
+                progressCircle.css("margin-left", time + "%");
+              });
             }
-          }
+          </script>
+          <script>
+            // Load the IFrame Player API code asynchronously.
+            var tag = document.createElement("script");
+            tag.src = "https://www.youtube.com/player_api";
+            var firstScriptTag = document.getElementsByTagName("script")[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-          function onPlayerStateChange(event) {
-            if (event.data == YT.PlayerState.PLAYING) {
-              var time = player.getCurrentTime();
-              setInterval(updateProgressBar, 100);
+            var player;
+            var videoID = window.location.href.split("uid=")[1];
+            if (videoID == null) {
+              // default video
+              videoID = "DGGCUPHodd4";
             }
-          }
-        </script>
+
+            function onYouTubePlayerAPIReady() {
+              player = new YT.Player("ytplayer", {
+                height: "390",
+                width: "640",
+                videoId: videoID,
+                events: {
+                  onReady: onPlayerReady,
+                  onStateChange: onPlayerStateChange,
+                },
+                playerVars: {
+                  controls: 0,
+                  disablekb: 1,
+                  modestbranding: 1,
+                  rel: 0,
+                  showinfo: 0,
+                  iv_load_policy: 3,
+                },
+              });
+            }
+            function onPlayerReady(event) {
+              event.target.stopVideo();
+            }
+
+            function playVideo() {
+              player.playVideo();
+            }
+
+            function pauseVideo() {
+              player.pauseVideo();
+            }
+
+            function stopVideo() {
+              player.stopVideo();
+              var progressCircle = $("#circle");
+              progressCircle.css("margin-left", "0%");
+            }
+
+            // call this function when video is playing
+
+            function updateProgressBar() {
+              var progressCircle = $("#circle");
+              var converted =
+                (player.getCurrentTime() / player.getDuration()) * 100;
+              progressCircle.css("margin-left", converted + "%");
+            }
+
+            var muteButton = $("#mute-button");
+            function muteVideo() {
+              if (!player.isMuted()) {
+                player.mute();
+              } else {
+                player.unMute();
+              }
+            }
+
+            function onPlayerStateChange(event) {
+              if (event.data == YT.PlayerState.PLAYING) {
+                var time = player.getCurrentTime();
+                setInterval(updateProgressBar, 100);
+              }
+            }
+          </script>
+        </div>
       </div>
     </div>
   </body>
