@@ -4,7 +4,7 @@ Started off as an attempt to synchronize listening on Youtube Music, but the fin
 
 ## Heroku
 
-The app is hosted on [heroku](https://aqueous-bastion-61665.herokuapp.com/). (Deprecated now because Heroku is no longer free :no_mouth:
+The app is hosted on [heroku](https://aqueous-bastion-61665.herokuapp.com/). (Deprecated now because Heroku is no longer free :no_mouth:)
 
 ## Running the app locally
 
